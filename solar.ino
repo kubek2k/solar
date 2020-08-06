@@ -31,13 +31,13 @@ byte ReczA3=12;
 byte ReczA4=13;
 
 byte PinTryb=7;             //numer wejscia cyfrowego(przycisk Tryb)) okreslajacego przejscie w tryb reczny/automatyczny
-byte PinSol=1;              //numer wejscia cyfrowego na ktore podaje napięcie z panelu "HIGH"ograniczone dzielnikiem i zabezpieczone dioda zenera 4,7V "szukanie slonca"
+byte PinSol=3;               //numer wejscia cyfrowego na ktore podaje napięcie z panelu ograniczone dzielnikiem i zabezpieczone dioda zenera 4,7V "szukanie slonca"
 
 float ulamekMroku=0.03; //mnoznik wartosciGranicaChmur powodujaca załączenie silnika A3 w przypadku ciemnosci- powrot do poranka.przy 0.05 troche za wczesnie sie przestawia
 uint16_t Odczyt;
 uint16_t Tol;
 uint16_t SwiatloscOdczyt;		  //do tej zmiennej zostanie przypisana wartosc swiatlosci z fotoogniwa/fototranzystora
-uint16_t GranicaChmur=500; //definicja poczatkowej minimalnej swiatlosci do dzialania, czulosc?
+uint16_t GranicaChmur=500; //definicja poczatkowej minimalnej swiatlosci do dzialania
 
 byte PWM=255;               //definicja PWMow z jaka maja dzialac silniki - 255 to max
 
@@ -138,15 +138,15 @@ void loop() {					//blok void loop wykonuje sie w nieskonczonosc
 
              if(digitalRead(PinSol)==1)
             { 
-              czekajDioda(1000,10);       //wykonuj przez 1 sekunde,( ale co 10 milisekund sprawdzaj chmury i załączaj/wyłączaj diode? uklad)
+              czekajDioda(500,10);       //wykonuj prez 0,5 sekunde, ale co 10 milisekund sprawdzaj chmury i załączaj/wyłączaj diode? uklad
              stanNiski();               //zalacz stani niskie na silniki
-             czekajDioda(30000,10);  //przez 30 sekund, (ale co 10 milisekund sprawdzaj chmury i załączaj/wyłączaj diode?)
+             czekajDioda(30000,10);  //odczekaj 30 sekund, ale co 10 milisekund sprawdzaj chmury i załączaj/wyłączaj diode?
              }    
              else
              {
-              czekajDioda(5000,10);       //wykonuj prez 5 sekund, ale co 10 milisekund sprawdzaj chmury i załączaj/wyłączaj diode? uklad
+              czekajDioda(500,10);       //wykonuj prez 05 sekunde, ale co 10 milisekund sprawdzaj chmury i załączaj/wyłączaj diode? uklad
              stanNiski();               //zalacz stani niskie na silniki
-             czekajDioda(1000,10);  //przez 1 sekunde, ale co 10 milisekund sprawdzaj chmury i załączaj/wyłączaj diode?      
+             czekajDioda(1000,10);  //odczekaj 1 sekund, ale co 10 milisekund sprawdzaj chmury i załączaj/wyłączaj diode?
               }
           }
         
@@ -236,7 +236,7 @@ void czekajDioda(float Czas,float Czek){
                  for (int i=1;i<Czas/Czek;i++){ 
                       delay(Czek);                     
                       SwiatloscOdczyt=analogRead(SwiatloscPin);       //odczyt napiecia z fototranzystora, (read=odczytaj)
-                      GranicaChmur=analogRead(GranicaChmurPin);             //odczyt granicy dzialania z potencjometru                             
+                      GranicaChmur=analogRead(GranicaChmurPin);       //odczyt granicy dodzialania z potencjometru
                       if (SwiatloscOdczyt>GranicaChmur){
                           digitalWrite(Dioda,HIGH);         
                       }
