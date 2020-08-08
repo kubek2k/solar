@@ -157,9 +157,9 @@ void loop() { //blok void loop wykonuje sie w nieskonczonosc
                 nieJedz();
                 delay(30000);
             } else {
-                delay(2000);
-                nieJedz();
                 delay(500);
+                nieJedz();
+                delay(1000);
             }
         } else {
             wylaczDiode();
